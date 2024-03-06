@@ -1,12 +1,17 @@
 package com.example.mygesplus.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Vertices
 
+// Couleurs définitves
+val RougePomme = Color(0xFFF91915)
+val JaunePomme = Color(0xFFE8FC80)
+val VertClair = Color(0xFF92FA3D)
+val VertFonce = Color(0xFF499E04)
+val VertSombre = Color(0xFF336D03)
+
+// Couleur du thème par défaut
 var CtxMain = Color(0xFF7F5050)
-var CtxInfo = Color(0x87CEEBEB)
-var accentColor = 0xFFD70000
-var coursePresentiel = 0x2196F3F3
-var courseDistance = 0x4CAF5050
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

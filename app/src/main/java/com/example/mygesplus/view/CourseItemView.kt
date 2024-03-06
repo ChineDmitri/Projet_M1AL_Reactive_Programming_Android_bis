@@ -2,6 +2,7 @@ package com.example.mygesplus.view
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,16 +12,22 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mygesplus.FullDescriptionCourseActivity
 import com.example.mygesplus.model.Course
+import com.example.mygesplus.ui.theme.Blanc
+import com.example.mygesplus.ui.theme.JaunePomme
+import com.example.mygesplus.ui.theme.RougePomme
+import com.example.mygesplus.ui.theme.VertClair
 import com.google.gson.Gson
 
 @Composable
@@ -29,6 +36,12 @@ fun CourseItemView(
 /*    onItemClick: () -> Unit*/
 ) {
     val context = LocalContext.current
+
+    Box(
+        modifier = Modifier
+            .size(50.dp,50.dp)
+            .background(RougePomme)
+    )
 
     Card(
         modifier = Modifier
@@ -42,10 +55,14 @@ fun CourseItemView(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Box(
-            // modifier = Modifier.background(CtxMain) /*ici à penser*/
+            modifier = Modifier
+                .background(VertClair)
+                .padding(25.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Column(

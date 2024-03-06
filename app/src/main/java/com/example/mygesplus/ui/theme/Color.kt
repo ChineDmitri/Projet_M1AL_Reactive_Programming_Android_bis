@@ -9,6 +9,7 @@ val JaunePomme = Color(0xFFE8FC80)
 val VertClair = Color(0xFF92FA3D)
 val VertFonce = Color(0xFF499E04)
 val VertSombre = Color(0xFF336D03)
+val Blanc = Color(0xFFFFFFFF)
 
 // Couleur du thème par défaut
 var CtxMain = Color(0xFF7F5050)

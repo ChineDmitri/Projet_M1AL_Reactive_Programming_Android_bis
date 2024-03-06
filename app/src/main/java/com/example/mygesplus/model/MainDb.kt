@@ -9,6 +9,7 @@ import com.example.mygesplus.model.converters.DateConverters
 import com.example.mygesplus.model.converters.ListConverter
 import com.example.mygesplus.model.dao.CourseDao
 
+
 @Database(
     entities = [
         Course::class,

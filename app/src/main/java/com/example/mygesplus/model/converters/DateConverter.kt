@@ -33,14 +33,4 @@ class DateConverters {
             dateFormat.format(Date(it.time))
         }
     }
-
-    @TypeConverter
-    fun fromTimestamp(value: Long?): Timestamp? {
-        return value?.let { Timestamp(it) }
-    }
-
-    @TypeConverter
-    fun toTimestamp(timestamp: Timestamp?): Long? {
-        return timestamp?.time
-    }
 }

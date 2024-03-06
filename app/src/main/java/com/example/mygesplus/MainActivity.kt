@@ -1,50 +1,35 @@
 package com.example.mygesplus
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mygesplus.model.Course
 import com.example.mygesplus.view.CourseItemView
+import com.example.mygesplus.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
-    /*private val viewModel: SharedViewModel by viewModels()*/
-
-    private val courses: List<Course> = listOf(
-        Course(
-            1,
-            "Cours 1",
-            "01/01/2022",
-            "8h00",
-            "8h00",
-            "Super Android course",
-            true,
-        ),
-        Course(
-            2,
-            "Cours 2 : Rust", "02/01/2022",
-            "12h00",
-            "13h00",
-            "Super Rustaman course",
-            true,
-        ),
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                itemsIndexed(courses) { index, cours ->
-                    Log.wtf("IDX::CourseItemView", index.toString())
-                    CourseItemView(cours) /*{
-                        viewModel.onCourseSelected(cours)
-                    }*/
-                }
-            }
+            val viewModel: MainViewModel = viewModel()
+
+            MainScreen(viewModel.courses.value)
+        }
+    }
+}
+
+@Composable
+fun MainScreen(courses: List<Course>) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        itemsIndexed(courses) { index, course ->
+            CourseItemView(course)
         }
     }
 }

@@ -37,12 +37,6 @@ fun CourseItemView(
 ) {
     val context = LocalContext.current
 
-    Box(
-        modifier = Modifier
-            .size(50.dp,50.dp)
-            .background(RougePomme)
-    )
-
     Card(
         modifier = Modifier
             .fillMaxWidth()

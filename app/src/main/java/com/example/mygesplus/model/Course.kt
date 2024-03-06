@@ -9,7 +9,7 @@ import java.sql.Timestamp
 data class Course(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "nom") val nom: String,
-    @ColumnInfo(name = "date") val date: Timestamp,
+    @ColumnInfo(name = "date") val date: String,
     @ColumnInfo(name = "heure_debut") val heureDebut: String,
     @ColumnInfo(name = "heure_fin") val heureFin: String,
     @ColumnInfo(name = "description") val description: String,

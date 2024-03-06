@@ -14,4 +14,5 @@ data class Course(
     @ColumnInfo(name = "heure_fin") val heureFin: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "isPresentiel") val isPresentiel: Boolean,
+    val emptyList: List<Course> = ArrayList<Course>()
 )

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.mygesplus.model.Course
 import java.sql.Timestamp
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     private val _courses: MutableState<List<Course>> = mutableStateOf(
         listOf(
             Course(
@@ -17,7 +17,6 @@ class MainViewModel: ViewModel() {
                 "10h00",
                 "Super Android course",
                 true,
-                emptyList()
             ),
             Course(
                 2,
@@ -27,7 +26,6 @@ class MainViewModel: ViewModel() {
                 "13h00",
                 "Super Rustaman course",
                 true,
-                emptyList()
             )
         )
     )

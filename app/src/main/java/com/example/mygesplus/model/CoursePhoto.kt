@@ -11,13 +11,13 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Course::class,
             parentColumns = ["id"],
-            childColumns = ["courseId"],
+            childColumns = ["course_id"],
             onDelete = ForeignKey.CASCADE // In PROD -> RESTRICT
         )
     ]
 )
 data class CoursePhoto(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "courseId") val courseId: Int,
+    @ColumnInfo(name = "course_id") val courseId: Int,
     @ColumnInfo(name = "photoUrl") val photoUrl: String
 )

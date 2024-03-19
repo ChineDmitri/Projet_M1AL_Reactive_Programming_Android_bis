@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mygesplus.model.Course
 import com.example.mygesplus.view.CourseItemView
 import com.example.mygesplus.viewmodel.MainViewModel
 
@@ -18,17 +18,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: MainViewModel = viewModel()
+            val mainViewModel: MainViewModel = viewModel(factory = MainViewModel.factory)
 
-            MainScreen(viewModel.courses.value)
+            MainScreen(mainViewModel)
         }
     }
 }
 
 @Composable
-fun MainScreen(courses: List<Course>) {
+fun MainScreen(mainViewModel: MainViewModel ) {
+    val courses = mainViewModel.coursesList.collectAsState(initial = emptyList())
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        itemsIndexed(courses) { index, course ->
+        /*item(courses.value) {
+            CourseItemView(course)
+        }*/
+        itemsIndexed(courses.value) { index, course ->
             CourseItemView(course)
         }
     }

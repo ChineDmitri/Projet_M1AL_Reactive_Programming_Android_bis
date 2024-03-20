@@ -26,7 +26,7 @@ import com.google.gson.Gson
 @Composable
 fun CourseItemView(
     course: Course,
-/*    onItemClick: () -> Unit*/
+    /*    onItemClick: () -> Unit*/
 ) {
     val context = LocalContext.current
 

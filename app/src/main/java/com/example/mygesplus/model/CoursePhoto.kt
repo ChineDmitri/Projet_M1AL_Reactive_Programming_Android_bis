@@ -18,6 +18,6 @@ import androidx.room.PrimaryKey
 )
 data class CoursePhoto(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "course_id") val courseId: Int,
+    @ColumnInfo(name = "course_id") val courseId: String,
     @ColumnInfo(name = "photoUrl") val photoUrl: String
 )

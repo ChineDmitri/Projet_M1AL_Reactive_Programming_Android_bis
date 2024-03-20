@@ -1,5 +1,6 @@
 package com.example.mygesplus.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -7,15 +8,34 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.mygesplus.App
 import com.example.mygesplus.model.Course
+import com.example.mygesplus.model.CourseFb
 import com.example.mygesplus.model.MainDb
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.UUID
 
 class MainViewModel(database: MainDb) : ViewModel() {
+    private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    private val calendar: Calendar = Calendar.getInstance()
 
-    val courseWithoutId = Course(
+    private val _currentDate = MutableStateFlow(dateFormat.format(calendar.time))
+    val currentDate = _currentDate.asStateFlow()
+
+    /* FIREBASE */
+    private val firebaseDatabase = FirebaseDatabase.getInstance()
+    private val coursesRef = firebaseDatabase.getReference("courses")
+
+    /*TEST FOR FIRE BASE*/
+    private val courseWithoutId1 = CourseFb(
+        id = coursesRef.key,
         nom = "Cours 3: Kotlin",
         date = Timestamp.valueOf("2022-01-03 00:00:00"),
         heureDebut = "9h00",
@@ -23,18 +43,8 @@ class MainViewModel(database: MainDb) : ViewModel() {
         description = "Super Kotlin course",
         isPresentiel = true
     )
-
-    private val course1 = Course(
-        null,
-        "Cours 3: Kotlin",
-        Timestamp.valueOf("2022-01-03 00:00:00"),
-        "9h00",
-        "11h00",
-        "Super Kotlin course",
-        true
-    )
-    private val course2 = Course(
-        null,
+    private val courseWithoutId2 = CourseFb(
+        coursesRef.key,
         "Cours 4: RUST_MAN",
         Timestamp.valueOf("2022-01-03 00:00:00"),
         "9h00",
@@ -43,13 +53,41 @@ class MainViewModel(database: MainDb) : ViewModel() {
         false
     )
 
+    /*TEST FOR INSERT*/
+    private val courseRoom = Course(
+        UUID.randomUUID().toString(),
+        "Cours 3: Kotlin",
+        Timestamp.valueOf("2022-01-03 00:00:00"),
+        "9h00",
+        "11h00",
+        "Super Kotlin course",
+        true
+    )
+
+
     init {
+//        var converter: DateConverters = DateConverters()
+
+        Log.wtf("KEY FOR COURSE1 before: ", courseWithoutId1.id)
+        coursesRef.push().setValue(courseWithoutId1)
+        coursesRef.push().setValue(courseWithoutId2)
+        Log.wtf("KEY FOR COURSE1 after: ", courseWithoutId1.id)
+
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                database.dao.insertCourse(course1)
-                database.dao.insertCourse(course2)
+                database.dao.insertCourse(courseRoom)
             }
         }
+    }
+
+    fun addDay() {
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        _currentDate.value = dateFormat.format(calendar.time)
+    }
+
+    fun subtractDay() {
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+        _currentDate.value = dateFormat.format(calendar.time)
     }
 
     val coursesList = database.dao.getAllCours()
@@ -67,30 +105,4 @@ class MainViewModel(database: MainDb) : ViewModel() {
             }
         }
     }
-
-    /*private val _courses: MutableState<List<Course>> = mutableStateOf(
-        listOf(
-            Course(
-                1,
-                "Cours 1",
-                Timestamp.valueOf("2022-01-01 00:00:00"),
-                "8h00",
-                "10h00",
-                "Super Android course",
-                true,
-            ),
-            Course(
-                2,
-                "Cours 2 : Rust",
-                Timestamp.valueOf("2022-01-02 00:00:00"),
-                "12h00",
-                "13h00",
-                "Super Rustaman course",
-                true,
-            )
-        )
-    )*/
-
-
-//    val courses: MutableState<List<Course>> get() = _courses
 }

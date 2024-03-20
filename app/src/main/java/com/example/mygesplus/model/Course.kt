@@ -7,8 +7,8 @@ import java.sql.Timestamp
 
 @Entity(tableName = "course")
 data class Course(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    @PrimaryKey(autoGenerate = false)
+    val id: String,
     @ColumnInfo(name = "nom")
     val nom: String,
     @ColumnInfo(name = "date")

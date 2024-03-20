@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.mygesplus.model.Course
 import com.example.mygesplus.model.CoursePhoto
 import com.example.mygesplus.model.CourseWithPhotos
@@ -15,11 +16,17 @@ interface CourseDao {
     @Insert
     fun insertCourse(course: Course)
 
+    @Update
+    fun updateCourse(course: Course)
+
     @Delete
     fun deleteCourse(course: Course)
 
     @Query("SELECT * FROM course")
     fun getAllCours(): Flow<List<Course>>
+
+    @Query("SELECT * FROM course WHERE date = :dateString")
+    fun getCoursesByDate(dateString: String): Flow<List<Course>>
 
     @Query("SELECT * FROM course")
     fun getCoursesWithPhotos(): Flow<List<CourseWithPhotos>>
@@ -32,6 +39,17 @@ interface CourseDao {
         }
     }
 
+    @Transaction
+    fun addPhotosToCourse(courseId: String, photos: List<CoursePhoto>) {
+        val photosWithCourseId = photos.map { photo ->
+            photo.copy(courseId = courseId)
+        }
+        insertPhotos(photosWithCourseId)
+    }
+
     @Insert
     fun insertPhoto(photo: CoursePhoto)
+
+    @Insert
+    fun insertPhotos(photos: List<CoursePhoto>)
 }

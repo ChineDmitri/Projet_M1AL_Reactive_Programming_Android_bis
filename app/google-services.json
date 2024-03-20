@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "870359963201",
+    "firebase_url": "https://m1al-rp-android-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "m1al-rp-android",
+    "storage_bucket": "m1al-rp-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870359963201:android:2cb5ca40f67315f2eb18c0",
+        "android_client_info": {
+          "package_name": "com.example.mygesplus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgjcJP1uAo-DZzuCq148xsvokqZdfy_2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

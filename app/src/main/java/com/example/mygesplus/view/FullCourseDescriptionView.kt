@@ -68,6 +68,20 @@ fun FullCourseDescriptionView(
                 Text("Prendre une photo")
             }
         }
+
+        // La photo du cours n'apparaît que si elle existe.
+        photoDuCours?.let {
+            Image(
+                bitmap = photoDuCours.asImageBitmap(),
+                contentDescription = null, // Ajoutez une description si nécessaire
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
+
+            // Rendre le bouton invisible une fois que l'image est affichée
+            buttonVisible.value = false
+        }
     }
 
 

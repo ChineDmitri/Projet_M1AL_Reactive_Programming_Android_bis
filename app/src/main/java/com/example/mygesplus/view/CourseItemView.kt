@@ -59,7 +59,7 @@ fun CourseItemView(
                     modifier = Modifier.weight(0.2f),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = course.description)
+                    Text(text = course.description + " " + course.date)
                 }
                 Column(
                     modifier = Modifier.weight(0.2f),

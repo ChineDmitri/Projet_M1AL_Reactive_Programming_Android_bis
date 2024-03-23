@@ -13,11 +13,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mygesplus.model.Course
 import com.example.mygesplus.view.CourseItemView
 import com.example.mygesplus.viewmodel.MainViewModel
 
@@ -52,7 +54,12 @@ fun MainScreen(mainViewModel: MainViewModel) {
                 Text(text = "Next")
             }
         }
-        val courses = mainViewModel.coursesList.collectAsState(initial = emptyList())
+        val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
+            initial = emptyList()
+        )
+        /*Erreur je sais pas pourquoi
+        GPT aussi connais pas */
+        //        val courses by mainViewModel.coursesList.collectAsState(initial = emptyList())
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             itemsIndexed(courses.value) { index, course ->
                 CourseItemView(course)

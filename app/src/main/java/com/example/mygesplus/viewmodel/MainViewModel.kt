@@ -13,6 +13,7 @@ import com.example.mygesplus.model.MainDb
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,12 +23,24 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
 
-class MainViewModel(database: MainDb) : ViewModel() {
+class MainViewModel(private val database: MainDb) : ViewModel() {
+    //    private val db: MainDb = database
     private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     private val calendar: Calendar = Calendar.getInstance()
-
     private val _currentDate = MutableStateFlow(dateFormat.format(calendar.time))
     val currentDate = _currentDate.asStateFlow()
+
+    private val _coursesList = MutableStateFlow<List<Course>>(emptyList())
+    val coursesList: StateFlow<List<Course>> = _coursesList
+    //    val coursesList : Flow<List<Course>> = database.dao.getCoursesByDate(currentDate.value)
+
+    private fun getCoursesByCurrentDate() {
+        viewModelScope.launch {
+            database.dao.getCoursesByDate(currentDate.value).collect { fetchedCourses ->
+                _coursesList.value = fetchedCourses
+            }
+        }
+    }
 
     /* FIREBASE */
     private val firebaseDatabase = FirebaseDatabase.getInstance()
@@ -46,7 +59,7 @@ class MainViewModel(database: MainDb) : ViewModel() {
     private val courseWithoutId2 = CourseFb(
         coursesRef.key,
         "Cours 4: RUST_MAN",
-        Timestamp.valueOf("2022-01-03 00:00:00"),
+        Timestamp.valueOf("2022-02-03 00:00:00"),
         "9h00",
         "11h00",
         "Super Rustaman course",
@@ -66,8 +79,7 @@ class MainViewModel(database: MainDb) : ViewModel() {
 
 
     init {
-//        var converter: DateConverters = DateConverters()
-
+        this.getCoursesByCurrentDate()
         Log.wtf("KEY FOR COURSE1 before: ", courseWithoutId1.id)
         coursesRef.push().setValue(courseWithoutId1)
         coursesRef.push().setValue(courseWithoutId2)
@@ -75,22 +87,24 @@ class MainViewModel(database: MainDb) : ViewModel() {
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                database.dao.insertCourse(courseRoom)
+                /*Pour test*/
+            //                database.dao.insertCourse(courseRoom)
             }
         }
+
     }
 
     fun addDay() {
         calendar.add(Calendar.DAY_OF_YEAR, 1)
         _currentDate.value = dateFormat.format(calendar.time)
+        getCoursesByCurrentDate()
     }
 
     fun subtractDay() {
         calendar.add(Calendar.DAY_OF_YEAR, -1)
         _currentDate.value = dateFormat.format(calendar.time)
+        getCoursesByCurrentDate()
     }
-
-    val coursesList = database.dao.getAllCours()
 
 
     companion object {

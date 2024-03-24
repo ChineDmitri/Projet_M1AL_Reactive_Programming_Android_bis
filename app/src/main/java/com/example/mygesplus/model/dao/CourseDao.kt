@@ -47,9 +47,19 @@ interface CourseDao {
         insertPhotos(photosWithCourseId)
     }
 
+
+    @Query("SELECT * FROM course_photo WHERE course_id = :courseId")
+    fun getPhotosForCourse(courseId: String): Flow<List<CoursePhoto>>
+
     @Insert
     fun insertPhoto(photo: CoursePhoto)
 
+    @Query("DELETE FROM course_photo WHERE id = :photoId")
+    fun deletePhoto(photoId: String)
+
     @Insert
     fun insertPhotos(photos: List<CoursePhoto>)
+
+
+
 }

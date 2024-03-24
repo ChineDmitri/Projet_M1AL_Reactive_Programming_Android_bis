@@ -75,6 +75,9 @@ dependencies {
     // === Shared SharedViewModel ===
     implementation("androidx.compose.runtime:runtime:1.0.7")
     implementation("androidx.compose.runtime:runtime-livedata:1.0.7")
+    // === Coil-Compose ===
+    implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.2")
+
     //    ====
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

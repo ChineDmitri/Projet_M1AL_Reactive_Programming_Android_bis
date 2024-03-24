@@ -87,7 +87,7 @@ class MainViewModel(private val database: MainDb) : ViewModel() {
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                /*Pour test*/
+                /*Pour test si il vous faut entity*/
             //                database.dao.insertCourse(courseRoom)
             }
         }

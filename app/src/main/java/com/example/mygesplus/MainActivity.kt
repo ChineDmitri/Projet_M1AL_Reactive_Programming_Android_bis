@@ -57,9 +57,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
         val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
             initial = emptyList()
         )
-        /*Erreur je sais pas pourquoi
-        GPT aussi connais pas */
-        //        val courses by mainViewModel.coursesList.collectAsState(initial = emptyList())
+
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             itemsIndexed(courses.value) { index, course ->
                 CourseItemView(course)
@@ -67,15 +65,5 @@ fun MainScreen(mainViewModel: MainViewModel) {
         }
     }
 }
-/*@Composable
-fun MainScreen(mainViewModel: MainViewModel ) {
-    val courses = mainViewModel.coursesList.collectAsState(initial = emptyList())
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        itemsIndexed(courses.value) { index, course ->
-            CourseItemView(course)
-        }
-    }
-
-}*/
 
 

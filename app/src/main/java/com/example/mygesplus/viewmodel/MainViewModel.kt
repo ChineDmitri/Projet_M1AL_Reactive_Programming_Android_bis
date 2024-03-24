@@ -10,14 +10,16 @@ import com.example.mygesplus.App
 import com.example.mygesplus.model.Course
 import com.example.mygesplus.model.CourseFb
 import com.example.mygesplus.model.MainDb
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -25,15 +27,13 @@ import java.util.UUID
 
 class MainViewModel(private val database: MainDb) : ViewModel() {
     //    private val db: MainDb = database
-    private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private val calendar: Calendar = Calendar.getInstance()
     private val _currentDate = MutableStateFlow(dateFormat.format(calendar.time))
     val currentDate = _currentDate.asStateFlow()
 
     private val _coursesList = MutableStateFlow<List<Course>>(emptyList())
     val coursesList: StateFlow<List<Course>> = _coursesList
-    //    val coursesList : Flow<List<Course>> = database.dao.getCoursesByDate(currentDate.value)
-
     private fun getCoursesByCurrentDate() {
         viewModelScope.launch {
             database.dao.getCoursesByDate(currentDate.value).collect { fetchedCourses ->
@@ -42,55 +42,46 @@ class MainViewModel(private val database: MainDb) : ViewModel() {
         }
     }
 
-    /* FIREBASE */
-    private val firebaseDatabase = FirebaseDatabase.getInstance()
-    private val coursesRef = firebaseDatabase.getReference("courses")
-
-    /*TEST FOR FIRE BASE*/
-    private val courseWithoutId1 = CourseFb(
-        id = coursesRef.key,
-        nom = "Cours 3: Kotlin",
-        date = Timestamp.valueOf("2022-01-03 00:00:00"),
-        heureDebut = "9h00",
-        heureFin = "11h00",
-        description = "Super Kotlin course",
-        isPresentiel = true
-    )
-    private val courseWithoutId2 = CourseFb(
-        coursesRef.key,
-        "Cours 4: RUST_MAN",
-        Timestamp.valueOf("2022-02-03 00:00:00"),
-        "9h00",
-        "11h00",
-        "Super Rustaman course",
-        false
-    )
-
-    /*TEST FOR INSERT*/
-    private val courseRoom = Course(
-        UUID.randomUUID().toString(),
-        "Cours 3: Kotlin",
-        Timestamp.valueOf("2022-01-03 00:00:00"),
-        "9h00",
-        "11h00",
-        "Super Kotlin course",
-        true
-    )
-
-
     init {
         this.getCoursesByCurrentDate()
-        Log.wtf("KEY FOR COURSE1 before: ", courseWithoutId1.id)
-        coursesRef.push().setValue(courseWithoutId1)
-        coursesRef.push().setValue(courseWithoutId2)
-        Log.wtf("KEY FOR COURSE1 after: ", courseWithoutId1.id)
-
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                /*Pour test si il vous faut entity*/
-            //                database.dao.insertCourse(courseRoom)
+                // init Firestore
+                val db = Firebase.firestore
+                // Récupération des données de Firestore
+                val querySnapshot = db.collection("cours").get().await()
+                val courses = mutableListOf<CourseFb>()
+                for (document in querySnapshot.documents) {
+                    val course = CourseFb(
+                        id = document.id,
+                        nom = document.getString("nom") ?: "",
+                        date = document.getString("date") ?: "",
+                        heureDebut = document.getString("heureDebut") ?: "",
+                        heureFin = document.getString("heureFin") ?: "",
+                        description = document.getString("description") ?: "",
+                        isPresentiel = document.getBoolean("isPresentiel") ?: false
+                    )
+                    courses.add(course)
+                }
+                // Insertion dans Room
+                for (course in courses) {
+                    val roomCourse = Course(
+                        id = course.id,
+                        nom = course.nom,
+                        date = course.date,
+                        heureDebut = course.heureDebut,
+                        heureFin = course.heureFin,
+                        description = course.description,
+                        isPresentiel = course.isPresentiel
+                    )
+
+                    database.dao.insertCourse(roomCourse)
+                }
             }
         }
+    }
+
+    fun isCoursInBdd(id: String){
 
     }
 

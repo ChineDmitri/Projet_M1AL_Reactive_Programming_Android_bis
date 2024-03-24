@@ -3,6 +3,7 @@ package com.example.mygesplus.model.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -13,8 +14,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CourseDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourse(course: Course)
+
+    @Query("SELECT * FROM course WHERE id = :courseId")
+    fun getCourseById(courseId: String): Course?
 
     @Update
     fun updateCourse(course: Course)

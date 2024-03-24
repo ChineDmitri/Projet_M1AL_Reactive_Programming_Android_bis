@@ -3,7 +3,9 @@ package com.example.mygesplus.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.sql.Date
 import java.sql.Timestamp
+import java.text.DateFormat
 
 @Entity(tableName = "course")
 data class Course(
@@ -12,7 +14,7 @@ data class Course(
     @ColumnInfo(name = "nom")
     val nom: String,
     @ColumnInfo(name = "date")
-    val date: Timestamp,
+    val date: String,
     @ColumnInfo(name = "heure_debut")
     val heureDebut: String,
     @ColumnInfo(name = "heure_fin")
@@ -21,7 +23,4 @@ data class Course(
     val description: String,
     @ColumnInfo(name = "isPresentiel")
     val isPresentiel: Boolean,
-) /*{
-    @Relation(parentColumn = "id", entityColumn = "course_id")
-    var coursePhotos: List<CoursePhoto> = ArrayList()
-}*/
+)

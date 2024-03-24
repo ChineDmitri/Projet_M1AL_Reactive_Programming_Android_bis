@@ -74,87 +74,33 @@ class FullDescriptionCourseActivity : ComponentActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             photoDuCours = data?.extras?.get("data") as Bitmap
 
-            // Quand l'image apparaît, le bouton devient invisible.
-            // on pourrait le désactiver si on avait + de place.
-
             // Sauvegarde de l'image dans le stockage interne de l'appareil
             saveBitmapImage(photoDuCours!!)
         }
     }
 
-    private fun removePhoto(){
-
-    }
-
-//    private fun saveBitmapImage(bitmap: Bitmap) {
-//        val timeStamp = System.currentTimeMillis()
-//        val values = ContentValues().apply {
-//            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-//            put(MediaStore.Images.Media.DATE_ADDED, timeStamp / 1000)
-//            put(MediaStore.Images.Media.DATE_TAKEN, timeStamp)
-//        }
-//
-//        var imageFilePath: String? = null
-//
-//        // Version supérieure ou égale à la version Q (Android 10)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/" + getString(R.string.app_name))
-//            values.put(MediaStore.Images.Media.IS_PENDING, true)
-//
-//            val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-//            uri?.let { imageUri ->
-//                try {
-//                    contentResolver.openOutputStream(imageUri)?.use { outputStream ->
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//                    }
-//                    values.put(MediaStore.Images.Media.IS_PENDING, false)
-//                    contentResolver.update(imageUri, values, null, null)
-//
-//                    imageFilePath = getImageFilePathFromUri(imageUri)
-//
-//                    persistPathInRoomDatabase(imageFilePath!!)
-//
-//                    // Загрузка изображения с использованием ImageLoader
-//                    val imageLoader = ImageLoader.Builder(this)
-//                        .availableMemoryPercentage(0.25)
-//                        .crossfade(true)
-//                        .build()
-//
-//                    val imageRequest = ImageRequest.Builder(this)
-//                        .data(imageUri)
-//                        .build()
-//
-//                    imageLoader.enqueue(imageRequest)
-//                } catch (e: IOException) {
-//                    Log.wtf("saveBitmapImage 1:", e.localizedMessage )
-////                    Toast.makeText(this, "Une erreur est survenue lors de la sauvegarde de l'image sur votre appareil.", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        } else {
-//            Log.wtf("saveBitmapImage 2:", "La version d'Android que votre appareil utilise ne permet pas l'enregistrement de l'image..." )
-////            Toast.makeText(this, "La version d'Android que votre appareil utilise ne permet pas l'enregistrement de l'image...", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
+    /**
+     * Cette fonction permet de sauvegarder une image Bitmap dans le stockage interne.
+     * @param bitmap L'image Bitmap à sauvegarder
+     */
     private fun saveBitmapImage(bitmap: Bitmap) {
-        // Создаем файл для сохранения изображения
+        // On récupère le répertoire des images publiques (généralement le répertoire Pictures)
         val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        val imageFile = File(imagesDir, "my_image_${System.currentTimeMillis()}.jpg")
+        // On créer un fichier pour l'image avec un nom unique basé sur le timestamp actuel.
+        val imageFile = File(imagesDir, "my_ges_pp_${System.currentTimeMillis()}.jpg")
 
         return try {
-            // Открываем поток для записи в файл
+            // On ouvre un flux de sortie vers le fichier image
             val outputStream = FileOutputStream(imageFile)
-
-            // Сжимаем и сохраняем изображение в файл
+            // On compresse et on écrit l'image Bitmap dans le fichier au format JPEG avec une qualité de 100%
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-
-            // Закрываем поток
+            // Une fois terminé, on ferme le flux de sortie.
             outputStream.close()
 
-            // Получаем URI созданного файла
-
+            // On récupère l'URI du fichier image
             val uriPhoto = Uri.fromFile(imageFile)
 
+            // On persiste le chemin de l'image dans la base de données Room.
             this.persistPathInRoomDatabase(uriPhoto.toString())
         } catch (e: IOException) {
             e.printStackTrace()
@@ -168,15 +114,21 @@ class FullDescriptionCourseActivity : ComponentActivity() {
         viewModel.addPhotoToCourse(coursePhoto)
     }
 
-    private fun getImageFilePathFromUri(uri: Uri): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
-            if(cursor.moveToFirst()) {
-                val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                return cursor.getString(columnIndex)
-            }
+    /**
+     * Fonction permettant la suppression de la photo d'un cours.
+     *
+     * @param id Id de la ligne où se trouve la liaison entre le cours et la photo  supprimer.
+     */
+    private fun removePhoto(id: Int, uriString: String){
+        // Supprimer la ligne dans room
+        viewModel.removeCoursPhoto(id)
+
+        // On supprime l'image stockée dans l'appareil
+        val uri = Uri.parse(uriString)
+        val fileToDelete = File(uri.path ?: "")
+        if(fileToDelete.exists()) {
+            fileToDelete.delete()
         }
-        return null
     }
 }
 

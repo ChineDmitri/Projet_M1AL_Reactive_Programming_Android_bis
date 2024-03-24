@@ -37,7 +37,7 @@ fun FullCourseDescriptionView(
     course: Course,
     fullCourseDescriptionViewModel: FullCourseDescriptionViewModel,
     dispatchTakePictureIntent: () -> Unit,
-    removePhoto: () -> Unit,
+    removePhoto: (id: Int, uri: String) -> Unit,
     /*photoDuCours: Bitmap?*/
 ) {
 
@@ -108,7 +108,7 @@ fun FullCourseDescriptionView(
 
                 Button(
                     onClick = {
-                        removePhoto()
+                        removePhoto(photo.id, photo.photoUrl)
                     }
                 ) {
                     Text("Supprimer la photo")

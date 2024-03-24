@@ -37,6 +37,7 @@ fun FullCourseDescriptionView(
     course: Course,
     fullCourseDescriptionViewModel: FullCourseDescriptionViewModel,
     dispatchTakePictureIntent: () -> Unit,
+    removePhoto: (id: Int, uri: String) -> Unit,
     /*photoDuCours: Bitmap?*/
 ) {
 
@@ -83,7 +84,6 @@ fun FullCourseDescriptionView(
             )
         }*/
 
-        /*TEST NULL A CHIER*/
         photos.forEach { photo ->
             Text(text = photo.photoUrl)
 
@@ -102,6 +102,17 @@ fun FullCourseDescriptionView(
                         .fillMaxWidth()
                         .height(200.dp)
                 )
+
+                // photo.id pour supprimer la photo de la base
+                // photo.photoUrl pour supprimer la photo de la galerie
+
+                Button(
+                    onClick = {
+                        removePhoto(photo.id, photo.photoUrl)
+                    }
+                ) {
+                    Text("Supprimer la photo")
+                }
 
 //                buttonVisible.value = false
             }

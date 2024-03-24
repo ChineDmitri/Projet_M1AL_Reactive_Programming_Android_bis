@@ -46,4 +46,10 @@ class FullCourseDescriptionViewModel(private val courseId: String, private val d
         }
     }
 
+    fun removeCoursPhoto(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            database.dao.deletePhoto(id)
+        }
+    }
+
 }

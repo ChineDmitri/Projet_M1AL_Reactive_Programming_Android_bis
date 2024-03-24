@@ -55,7 +55,7 @@ interface CourseDao {
     fun insertPhoto(photo: CoursePhoto)
 
     @Query("DELETE FROM course_photo WHERE id = :photoId")
-    fun deletePhoto(photoId: String)
+    fun deletePhoto(photoId: Int)
 
     @Insert
     fun insertPhotos(photos: List<CoursePhoto>)

@@ -53,6 +53,7 @@ class FullDescriptionCourseActivity : ComponentActivity() {
                 course,
                 fullCourseDescriptionViewModel,
                 this@FullDescriptionCourseActivity::dispatchTakePictureIntent,
+                this@FullDescriptionCourseActivity::removePhoto,
             )
         }
     }
@@ -79,6 +80,10 @@ class FullDescriptionCourseActivity : ComponentActivity() {
             // Sauvegarde de l'image dans le stockage interne de l'appareil
             saveBitmapImage(photoDuCours!!)
         }
+    }
+
+    private fun removePhoto(){
+
     }
 
 //    private fun saveBitmapImage(bitmap: Bitmap) {

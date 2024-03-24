@@ -46,4 +46,8 @@ class FullCourseDescriptionViewModel(private val courseId: String, private val d
         }
     }
 
+    fun removeCoursPhoto() {
+
+    }
+
 }

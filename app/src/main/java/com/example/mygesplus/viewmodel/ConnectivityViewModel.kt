@@ -7,27 +7,33 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+
+class ConnectivityViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ConnectivityViewModel::class.java)) {
+            return ConnectivityViewModel(context) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
 class ConnectivityViewModel(private val context: Context) : ViewModel() {
 
     companion object {
         fun provideFactory(context: Context): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    if (modelClass.isAssignableFrom(ConnectivityViewModel::class.java)) {
-                        return ConnectivityViewModel(context) as T
-                    }
-                    throw IllegalArgumentException("Unknown ViewModel class")
-                }
-            }
+            return ConnectivityViewModelFactory(context)
         }
     }
 
-    private val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
+    /*VERIFICATION CONNECTION*/
+    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
+            as ConnectivityManager
     private val _isConnected = MutableStateFlow(false)
     val isConnected: StateFlow<Boolean> = _isConnected
 
@@ -61,6 +67,13 @@ class ConnectivityViewModel(private val context: Context) : ViewModel() {
             .build()
 
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+    fun setIsConnectedAfterDelay(delayMillis: Long) {
+        viewModelScope.launch {
+            delay(delayMillis)
+            _isConnected.value = true
+        }
     }
 
 }

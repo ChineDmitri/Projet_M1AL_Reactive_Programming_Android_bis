@@ -1,5 +1,10 @@
 package com.example.mygesplus.viewmodel
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -81,7 +86,7 @@ class MainViewModel(private val database: MainDb) : ViewModel() {
         }
     }
 
-    fun isCoursInBdd(id: String){
+    fun isCoursInBdd(id: String) {
 
     }
 
@@ -96,7 +101,6 @@ class MainViewModel(private val database: MainDb) : ViewModel() {
         _currentDate.value = dateFormat.format(calendar.time)
         getCoursesByCurrentDate()
     }
-
 
     companion object {
         val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -83,8 +85,57 @@ fun FullCourseDescriptionView(
                     .scale(0.5f)
             )
         }*/
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                itemsIndexed(photos) { index, photo ->
+                    Text(text = index.toString() + " " + photo.photoUrl)
 
-        photos.forEach { photo ->
+                    val imageBitmap = remember { mutableStateOf<ImageBitmap?>(null) }
+
+                    LaunchedEffect(photo.photoUrl) {
+                        val loadedImageBitmap = loadImageBitmap(photo.photoUrl)
+                        imageBitmap.value = loadedImageBitmap
+                    }
+
+                    imageBitmap.value?.let { bitmap ->
+                        Image(
+                            bitmap = bitmap,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                        )
+
+                        // photo.id pour supprimer la photo de la base
+                        // photo.photoUrl pour supprimer la photo de la galerie
+
+                        Button(
+                            onClick = {
+                                removePhoto(photo.id, photo.photoUrl)
+                            }
+                        ) {
+                            Text("Supprimer la photo")
+                        }
+
+//                buttonVisible.value = false
+                    }
+                }
+            }
+
+            Button(
+                onClick = {
+                    dispatchTakePictureIntent() // Appel de la fonction de prise de photo
+                },
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                Text("Prendre une photo")
+            }
+        }
+
+
+        /*photos.forEach { photo ->
             Text(text = photo.photoUrl)
 
             val imageBitmap = remember { mutableStateOf<ImageBitmap?>(null) }
@@ -116,10 +167,10 @@ fun FullCourseDescriptionView(
 
 //                buttonVisible.value = false
             }
-        }
+        }*/
 
         // Bouton pour prendre une photo
-        if (buttonVisible.value) {
+        /*if (buttonVisible.value) {
             Button(
                 onClick = {
                     dispatchTakePictureIntent() // Appel de la fonction de prise de photo
@@ -128,8 +179,7 @@ fun FullCourseDescriptionView(
             ) {
                 Text("Prendre une photo")
             }
-        }
-
+        }*/
 
 
         // La photo du cours n'apparaît que si elle existe.

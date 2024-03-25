@@ -80,7 +80,7 @@ class MainViewModel(private val database: MainDb) : ViewModel() {
                         isPresentiel = course.isPresentiel
                     )
 
-                    database.dao.insertCourse(roomCourse)
+                    database.dao.updateCourse(roomCourse)
                 }
             }
         }

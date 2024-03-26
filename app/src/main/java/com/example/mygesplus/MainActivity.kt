@@ -83,131 +83,135 @@ fun MainScreen(
 
     val currentDate by mainViewModel.currentDate.collectAsState()
 
-    val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
-        initial = emptyList()
-    )
 
-    // Topbar pour la date
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.1f)
-            .background(Color(249, 25, 21, 255)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    Column(modifier = Modifier.fillMaxWidth()) {
 
+
+        val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
+            initial = emptyList()
         )
-    {
-        Text(
-            text = "Aujourd'hui: $currentDate",
-            modifier = Modifier.padding(16.dp),
-            style = TextStyle(color = Color.White, fontSize = 26.sp)
-        )
-    }
 
-    ConnectivityStatusBar(isConnected)
+        // Topbar pour la date
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.1f)
+                .background(Color(249, 25, 21, 255)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
 
-    val scrollingState = rememberLazyListState()
-    val buttonsVisible = remember { mutableStateOf(true) }
-
-    Box() {
-
-        // Item Recycler
-        LazyColumn(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onPress = { buttonsVisible.value = !buttonsVisible.value },
-                    onLongPress = { buttonsVisible.value = !buttonsVisible.value },
-                )
-            }) {
-            itemsIndexed(courses.value) { index, course ->
-                CourseItemView(course)
-            }
+            )
+        {
+            Text(
+                text = "Aujourd'hui: $currentDate",
+                modifier = Modifier.padding(16.dp),
+                style = TextStyle(color = Color.White, fontSize = 26.sp)
+            )
         }
 
-        // Row box bouttons de navigation
-        if (buttonsVisible.value) {
-            Row(
+        ConnectivityStatusBar(isConnected)
+
+        val scrollingState = rememberLazyListState()
+        val buttonsVisible = remember { mutableStateOf(true) }
+
+        Box() {
+
+            // Item Recycler
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .padding(16.dp)
-                    .alpha(if (buttonsVisible.value) 1f else 0f),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.SpaceBetween
-            )
-            {
-
-                Button(
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp),
-                    onClick = { mainViewModel.subtractDay() },
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(146, 250, 61, 255),
-                        contentColor = Color.White
+                /*.pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress = { buttonsVisible.value = !buttonsVisible.value },
+                        onLongPress = { buttonsVisible.value = !buttonsVisible.value },
                     )
-                )
-                {
-                    Text(
-                        text = "<", modifier = Modifier
-                            .padding(0.dp, 0.dp, 0.dp, 7.dp),
-                        style = TextStyle(color = Color.White, fontSize = 50.sp)
-                    )
-                }
-
-                Button(
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp),
-                    onClick = { navigateToAddCourseView(context)},
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(146, 250, 61, 255),
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(
-                        text = "+",
-                        modifier = Modifier
-                            .padding(0.dp, 0.dp, 0.dp, 7.dp),
-                        style = TextStyle(color = Color.White, fontSize = 50.sp)
-                    )
-                }
-
-                Button(
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp),
-                    onClick = { mainViewModel.addDay() },
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(146, 250, 61, 255),
-                        contentColor = Color.White
-                    )
-                )
-                {
-                    Text(
-                        text = ">",
-                        modifier = Modifier
-                            .padding(0.dp, 0.dp, 0.dp, 7.dp),
-                        style = TextStyle(color = Color.White, fontSize = 50.sp)
-                    )
+                }*/
+            ) {
+                itemsIndexed(courses.value) { index, course ->
+                    CourseItemView(course)
                 }
             }
+
+            // Row box bouttons de navigation
+            if (buttonsVisible.value) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(16.dp)
+                        .alpha(if (buttonsVisible.value) 1f else 0f),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                )
+                {
+
+                    Button(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp),
+                        onClick = { mainViewModel.subtractDay() },
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(146, 250, 61, 255),
+                            contentColor = Color.White
+                        )
+                    )
+                    {
+                        Text(
+                            text = "<", modifier = Modifier
+                                .padding(0.dp, 0.dp, 0.dp, 7.dp),
+                            style = TextStyle(color = Color.White, fontSize = 50.sp)
+                        )
+                    }
+
+                    Button(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp),
+                        onClick = { navigateToAddCourseView(context) },
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(146, 250, 61, 255),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(
+                            text = "+",
+                            modifier = Modifier
+                                .padding(0.dp, 0.dp, 0.dp, 7.dp),
+                            style = TextStyle(color = Color.White, fontSize = 50.sp)
+                        )
+                    }
+
+                    Button(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp),
+                        onClick = { mainViewModel.addDay() },
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(146, 250, 61, 255),
+                            contentColor = Color.White
+                        )
+                    )
+                    {
+                        Text(
+                            text = ">",
+                            modifier = Modifier
+                                .padding(0.dp, 0.dp, 0.dp, 7.dp),
+                            style = TextStyle(color = Color.White, fontSize = 50.sp)
+                        )
+                    }
+                }
+            }
+
         }
-
-
     }
 }
-
-private fun navigateToAddCourseView(context: Context ){
+private fun navigateToAddCourseView(context: Context) {
     val intent = Intent(context, AddCourseActivity::class.java)
     context.startActivity(intent)
 }
-
 
 

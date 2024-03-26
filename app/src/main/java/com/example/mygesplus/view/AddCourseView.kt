@@ -25,7 +25,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mygesplus.viewmodel.AddCourseViewModel
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 @Composable
 fun AddCourseView(
@@ -59,6 +61,12 @@ fun AddCourseView(
             selectedDate.value.get(Calendar.DAY_OF_MONTH)
         )
 
+
+    // Set the date format to dd/MM/yyyy
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        datePicker.datePicker.maxDate = System.currentTimeMillis() // Set maximum date
+        datePicker.setTitle("Select Date")
+        datePicker.show()
         datePicker.show()
     }
 
@@ -205,7 +213,8 @@ fun AddCourseView(
 }
 
 fun formatDate(calendar: Calendar): String {
-    return "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.YEAR)}"
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    return dateFormat.format(calendar.time)
 }
 
 fun formatTime(calendar: Calendar): String {

@@ -101,7 +101,7 @@ fun MainScreen(
             )
         {
             Text(
-                text = "Aujourd'hui: $currentDate",
+                text = " $currentDate ",
                 modifier = Modifier.padding(16.dp),
                 style = TextStyle(color = Color.White, fontSize = 26.sp)
             )

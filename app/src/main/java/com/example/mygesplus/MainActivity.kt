@@ -84,7 +84,12 @@ fun MainScreen(
     val currentDate by mainViewModel.currentDate.collectAsState()
 
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color(232, 252, 128, 255))
+    )
+    {
+
 
 
         val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
@@ -103,7 +108,7 @@ fun MainScreen(
             )
         {
             Text(
-                text = "Aujourd'hui: $currentDate",
+                text = " $currentDate ",
                 modifier = Modifier.padding(16.dp),
                 style = TextStyle(color = Color.White, fontSize = 26.sp)
             )

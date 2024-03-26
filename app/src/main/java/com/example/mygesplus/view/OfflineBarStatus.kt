@@ -44,6 +44,6 @@ fun ConnectivityStatusBar(isConnected: Boolean) {
 
     SnackbarHost(
         hostState = snackbarHostState,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(0.dp)
     )
 }

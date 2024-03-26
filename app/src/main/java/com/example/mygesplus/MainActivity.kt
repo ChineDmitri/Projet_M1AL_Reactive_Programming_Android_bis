@@ -78,7 +78,11 @@ fun MainScreen(
 
     val currentDate by mainViewModel.currentDate.collectAsState()
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color(232, 252, 128, 255))
+    )
+    {
 
 
         val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(

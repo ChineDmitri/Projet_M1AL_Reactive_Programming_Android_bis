@@ -28,6 +28,10 @@
             android:name=".FullDescriptionCourseActivity"
             android:label="Full Description Course Activity">
         </activity>
+        <activity
+            android:name=".AddCourseActivity"
+            android:label="Add Course Activity">
+        </activity>
     </application>
 
 </manifest>

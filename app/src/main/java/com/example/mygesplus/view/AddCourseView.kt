@@ -23,11 +23,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.mygesplus.viewmodel.AddCourseViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 @Composable
 fun AddCourseView(
@@ -48,25 +46,25 @@ fun AddCourseView(
     val inputEndTimeText = remember { mutableStateOf(formatTime(heureFin.value)) }
 
 
-    fun showDatePicker(){
+    fun showDatePicker() {
+        val selectedCalendar = selectedDate.value
         val datePicker = DatePickerDialog(
             context,
-            {_, year, month, dayOfMonth ->
-                selectedDate.value.set(year,month,dayOfMonth)
+            { _, year, month, dayOfMonth ->
+                selectedCalendar.set(year, month, dayOfMonth)
                 // Update the text whenever a new date is chosen
-                inputDateText.value = formatDate(selectedDate.value)
+                inputDateText.value = formatDate(selectedCalendar)
             },
-            selectedDate.value.get(Calendar.YEAR),
-            selectedDate.value.get(Calendar.MONTH),
-            selectedDate.value.get(Calendar.DAY_OF_MONTH)
+            selectedCalendar.get(Calendar.YEAR),
+            selectedCalendar.get(Calendar.MONTH),
+            selectedCalendar.get(Calendar.DAY_OF_MONTH)
         )
 
+        val maxCalendar = Calendar.getInstance()
+        maxCalendar.add(Calendar.YEAR, 10)
+        datePicker.datePicker.maxDate = maxCalendar.timeInMillis
 
-    // Set the date format to dd/MM/yyyy
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        datePicker.datePicker.maxDate = System.currentTimeMillis() // Set maximum date
         datePicker.setTitle("Select Date")
-        datePicker.show()
         datePicker.show()
     }
 

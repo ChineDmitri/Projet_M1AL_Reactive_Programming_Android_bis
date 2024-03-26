@@ -83,8 +83,10 @@ fun FullCourseDescriptionView(
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            Text(text = course.nom,
-                style = TextStyle(color = Color.Black, fontSize = 26.sp))
+            Text(
+                text = course.nom,
+                style = TextStyle(color = Color.Black, fontSize = 26.sp)
+            )
         }
 
         Column(
@@ -94,8 +96,10 @@ fun FullCourseDescriptionView(
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            Text(text = course.date,
-                style = TextStyle(color = Color.Black, fontSize = 22.sp))
+            Text(
+                text = course.date,
+                style = TextStyle(color = Color.Black, fontSize = 22.sp)
+            )
         }
 
         // Card Description
@@ -109,13 +113,18 @@ fun FullCourseDescriptionView(
 
             Column(
                 modifier = Modifier
-                    .background(Color(73, 158, 4, 255))
+                    .background(
+                        if (course.isPresentiel) Color.Green else Color.Red,
+                        RoundedCornerShape(6.dp, 6.dp, 0.dp, 0.dp)
+                    )
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             )
             {
-                Text(text = course.isPresentiel.toString(),
-                    style = TextStyle(color = Color.White, fontSize = 22.sp))
+                Text(
+                    text = if (course.isPresentiel) "Presentiel" else "Distanciel",
+                    style = TextStyle(color = Color.White, fontSize = 22.sp)
+                )
             }
 
             Column(
@@ -124,9 +133,11 @@ fun FullCourseDescriptionView(
                     .fillMaxWidth()
                     .fillMaxHeight(0.25f),
             ) {
-                Text(modifier = Modifier
-                    .padding(5.dp)
-                    ,text = course.description,)
+                Text(
+                    modifier = Modifier
+                        .padding(5.dp),
+                    text = course.description,
+                )
             }
         }
 
@@ -168,8 +179,9 @@ fun FullCourseDescriptionView(
                 Text("Prendre une photo")
             }
 
-            LazyColumn(modifier = Modifier
-                .fillMaxWidth(),
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             )
 
@@ -184,9 +196,10 @@ fun FullCourseDescriptionView(
                         imageBitmap.value = loadedImageBitmap
                     }
 
-                    Box(modifier = Modifier
-                        .padding(10.dp),
-                        )
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp),
+                    )
                     {
 
                         imageBitmap.value?.let { bitmap ->
@@ -204,11 +217,12 @@ fun FullCourseDescriptionView(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth(),
-                                horizontalArrangement =  Arrangement.End
+                                horizontalArrangement = Arrangement.End
                             ) {
-                                Button( modifier = Modifier
-                                    .height(50.dp)
-                                    .width(50.dp),
+                                Button(
+                                    modifier = Modifier
+                                        .height(50.dp)
+                                        .width(50.dp),
                                     onClick = {
                                         removePhoto(photo.id, photo.photoUrl)
                                     },
@@ -217,13 +231,15 @@ fun FullCourseDescriptionView(
                                         contentColor = Color.White
                                     )
                                 ) {
-                                    Text(modifier = Modifier,
-                                        text = "X")
+                                    Text(
+                                        modifier = Modifier,
+                                        text = "X"
+                                    )
                                 }
 
                             }
 
-                    }
+                        }
 
 //                buttonVisible.value = false
                     }

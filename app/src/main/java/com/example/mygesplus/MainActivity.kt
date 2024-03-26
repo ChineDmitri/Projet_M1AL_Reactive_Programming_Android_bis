@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,10 +32,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,12 +83,12 @@ fun MainScreen(
     val currentDate by mainViewModel.currentDate.collectAsState()
 
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color(232, 252, 128, 255))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(232, 252, 128, 255))
     )
     {
-
 
 
         val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
@@ -126,12 +125,12 @@ fun MainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                /*.pointerInput(Unit) {
-                    detectTapGestures(
-                        onPress = { buttonsVisible.value = !buttonsVisible.value },
-                        onLongPress = { buttonsVisible.value = !buttonsVisible.value },
-                    )
-                }*/
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onPress = { buttonsVisible.value = !buttonsVisible.value },
+                            onLongPress = { buttonsVisible.value = !buttonsVisible.value },
+                        )
+                    }
             ) {
                 itemsIndexed(courses.value) { index, course ->
                     CourseItemView(course)
@@ -214,6 +213,7 @@ fun MainScreen(
         }
     }
 }
+
 private fun navigateToAddCourseView(context: Context) {
     val intent = Intent(context, AddCourseActivity::class.java)
     context.startActivity(intent)

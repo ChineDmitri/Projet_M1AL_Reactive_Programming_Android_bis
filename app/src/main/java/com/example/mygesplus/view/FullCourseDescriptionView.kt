@@ -29,16 +29,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.room.util.getColumnIndex
 import com.example.mygesplus.model.Course
-import com.example.mygesplus.ui.theme.CtxMain
 import com.example.mygesplus.viewmodel.FullCourseDescriptionViewModel
 import java.io.IOException
 import java.net.URL
@@ -233,14 +230,6 @@ fun FullCourseDescriptionView(
                 }
             }
 
-            Button(
-                onClick = {
-                    dispatchTakePictureIntent() // Appel de la fonction de prise de photo
-                },
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Text("Prendre une photo")
-            }
         }
 
 

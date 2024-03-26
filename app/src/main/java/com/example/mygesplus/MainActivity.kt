@@ -63,26 +63,30 @@ fun MainScreen(
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        val currentDate by mainViewModel.currentDate.collectAsState()
 
-        Text(
-            text = "Aujourd'hui: $currentDate",
-            modifier = Modifier.padding(16.dp)
-        )
-        Row(modifier = Modifier.padding(16.dp)) {
-            Button(onClick = { mainViewModel.subtractDay() }) {
-                Text(text = "Prev")
-            }
-            Spacer(modifier = Modifier.padding(8.dp))
-            Button(onClick = { mainViewModel.addDay() }) {
-                Text(text = "Next")
-            }
-        }
         val courses: State<List<Course>> = mainViewModel.coursesList.collectAsState(
             initial = emptyList()
         )
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            item {
+                val currentDate by mainViewModel.currentDate.collectAsState()
+
+                Text(
+                    text = "$currentDate",
+                    modifier = Modifier.padding(16.dp)
+                )
+                Row(modifier = Modifier.padding(16.dp)) {
+                    Button(onClick = { mainViewModel.subtractDay() }) {
+                        Text(text = "Prev")
+                    }
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Button(onClick = { mainViewModel.addDay() }) {
+                        Text(text = "Next")
+                    }
+                }
+            }
+
             itemsIndexed(courses.value) { index, course ->
                 CourseItemView(course)
             }

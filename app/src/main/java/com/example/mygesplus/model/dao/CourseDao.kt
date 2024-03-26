@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CourseDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertCourse(course: Course)
 
     @Query("SELECT * FROM course WHERE id = :courseId")
@@ -22,6 +22,16 @@ interface CourseDao {
 
     @Update
     fun updateCourse(course: Course)
+
+    @Transaction
+    fun insertOrUpdateCourse(course: Course) {
+        val existingCourse = getCourseById(course.id)
+        if (existingCourse == null) {
+            insertCourse(course)
+        } else {
+            updateCourse(course)
+        }
+    }
 
     @Delete
     fun deleteCourse(course: Course)

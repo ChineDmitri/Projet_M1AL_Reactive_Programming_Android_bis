@@ -39,7 +39,7 @@ interface CourseDao {
     @Query("SELECT * FROM course")
     fun getAllCours(): Flow<List<Course>>
 
-    @Query("SELECT * FROM course WHERE date = :dateString")
+    @Query("SELECT * FROM course WHERE date = :dateString ORDER BY heure_debut ASC")
     fun getCoursesByDate(dateString: String): Flow<List<Course>>
 
     @Query("SELECT * FROM course")

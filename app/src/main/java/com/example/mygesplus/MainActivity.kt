@@ -44,7 +44,6 @@ import com.example.mygesplus.view.ConnectivityStatusBar
 import com.example.mygesplus.view.CourseItemView
 import com.example.mygesplus.viewmodel.ConnectivityViewModel
 import com.example.mygesplus.viewmodel.MainViewModel
-import com.google.android.gms.wallet.button.ButtonConstants
 
 class MainActivity : ComponentActivity() {
     lateinit var connectivityViewModel: ConnectivityViewModel

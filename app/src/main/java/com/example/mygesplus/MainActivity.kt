@@ -35,8 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mygesplus.model.Course
 import com.example.mygesplus.view.ConnectivityStatusBar
@@ -76,6 +76,7 @@ fun MainScreen(
         connectivityViewModel.setIsConnectedAfterDelay(3000) // Change isConnected after 3 sec.
     }
 
+    val currentDate by mainViewModel.currentDate.collectAsState()
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -101,6 +102,8 @@ fun MainScreen(
                 style = TextStyle(color = Color.White, fontSize = 26.sp)
             )
         }
+
+        ConnectivityStatusBar(isConnected)
 
         val scrollingState = rememberLazyListState()
         val buttonsVisible = remember { mutableStateOf(true) }

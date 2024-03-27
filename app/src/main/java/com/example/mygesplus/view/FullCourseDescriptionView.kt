@@ -29,6 +29,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -114,7 +116,7 @@ fun FullCourseDescriptionView(
             Column(
                 modifier = Modifier
                     .background(
-                        if (course.isPresentiel) Color.Green else Color.Red,
+                        if (course.isPresentiel) Color(51, 109, 3, 255) else Color(249, 25, 21, 255),
                         RoundedCornerShape(6.dp, 6.dp, 0.dp, 0.dp)
                     )
                     .fillMaxWidth(),
@@ -170,13 +172,15 @@ fun FullCourseDescriptionView(
                 onClick = {
                     dispatchTakePictureIntent() // Appel de la fonction de prise de photo
                 },
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier.padding(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(146, 250, 61, 255),
-                    contentColor = Color.Black
+                    containerColor = Color(51, 109, 3, 255),
+                    contentColor = Color.White
                 )
             ) {
-                Text("Prendre une photo")
+                Text(modifier = Modifier
+                    .padding(10.dp),
+                    text = "Prendre une photo")
             }
 
             LazyColumn(
@@ -208,7 +212,8 @@ fun FullCourseDescriptionView(
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(470.dp),
+                                    .height(475.dp)
+                                    .clip(RoundedCornerShape(35.dp)),
                             )
 
                             // photo.id pour supprimer la photo de la base

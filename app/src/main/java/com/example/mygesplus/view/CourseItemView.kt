@@ -105,7 +105,8 @@ fun CourseItemView(
                     .fillMaxWidth()
                     .height(40.dp)
                     .background(
-                        if (course.isPresentiel) Color.Green else Color.Red,
+                        if (course.isPresentiel) Color(51, 109, 3, 255)
+                        else Color(249, 25, 21, 255),
                         RoundedCornerShape(6.dp, 6.dp, 0.dp, 0.dp)
                     ),
                     horizontalArrangement = Arrangement.Center,
